@@ -48,7 +48,7 @@ Machines = [A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, B1, B2, B3, B4, B5, C1, C2,
 #Add productivity on running time ratio column
 
 for machine in Machines:
-    ratio = round(machine[2] / machine[3], 5)
+    ratio = round(machine[3] / machine[2], 5)
     machine.append(ratio)
 
 
@@ -59,7 +59,6 @@ def machine_sort(n):
 
 Machines.sort(reverse=True, key=machine_sort)
 
-#print(Machines)
 
 Sites = [S1, S2, S3, S4, S5, S6]
 
@@ -90,32 +89,49 @@ while len(Machines)>0:
 
 Distinct_machines = [[item[0],item[2], item[3], item[4]] for item in Distinct_machines]
 
-#print(Distinct_machines)
+print(len(Distinct_machines))
 
 
 # Create empty dictionary with site names as keys
 selected_machines_by_site = {site[0]: [] for site in Sites}
 
 for site in Sites:
+    
     temp_list = []
+    
     surface = site[1]
+    
     machines_to_remove = []
+    
     for i, machine in enumerate(Distinct_machines):
+        
         if machine[1] <= site[2]:
-            temp_list.append(machine)
-            surface -= machine[2]
+            
             if surface <= 0:
+                
                 break
-            machines_to_remove.append(i)
+            
+            else:
+                
+                temp_list.append(machine)
+            
+                surface -= machine[2]
+            
+                del Distinct_machines[i]
+            
     for temp in temp_list:
+        
         selected_machines_by_site[site[0]].append(temp)
-    # Delete the machines used in temp_list from Distinct_machines
-    for i in reversed(machines_to_remove):
-        del Distinct_machines[i]
+
+
         
 for site, machines in selected_machines_by_site.items():
     print(f"{site}: {machines}")
     total = sum(machine[2] for machine in machines)
-    print(f"Total selected machines for {site}: {total}\n")
+    print(f"Total selected machines for {site}: {total}")
+    print(f"Number of machines used for {site}: {len(machines)}\n")
+    
+    
 
-print(Distinct_machines, "\n", "len(Distinct_machines) = ", len(Distinct_machines))
+print("Distinct_machines\n",Distinct_machines, "\n", "len(Distinct_machines) = ", len(Distinct_machines))
+
